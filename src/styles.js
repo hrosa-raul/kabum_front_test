@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 export default createGlobalStyle`
 
@@ -8,7 +9,6 @@ export default createGlobalStyle`
     padding: 0;
     outline: 0;
     box-sizing: border-box;
-    background-color: #CECEF6;
   }
 
   *:focus{
@@ -17,6 +17,15 @@ export default createGlobalStyle`
 
   html, body, #root{
     height: 100%;
+    background-color: #CECEF6;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
   }
 
   
