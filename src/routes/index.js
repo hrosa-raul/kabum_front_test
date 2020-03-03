@@ -13,6 +13,7 @@ export default function Routes(){
 
       <Route path="/home" exact component={Home} isPrivate/>
       <Route path="/client" exact component={Client} isPrivate/>
+      <Route path="/client/:id" exact component={Client} isPrivate/>
     </Switch>
   );
 }

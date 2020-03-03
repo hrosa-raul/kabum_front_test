@@ -5,6 +5,7 @@ import { useField } from '@rocketseat/unform';
 const InputMask = ({ name, ...rest }) => {
   const inputRef = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
+  
   useEffect(() => {
     registerField({
       name: fieldName,

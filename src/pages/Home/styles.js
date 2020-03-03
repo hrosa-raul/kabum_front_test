@@ -29,5 +29,9 @@ export const ButtonContainer = styled.div`
     font-size: 16px;
     color: #fff;
   }
+`
 
+export const WrapperList = styled.div`
+ height: 85%;
+ overflow: auto;
 `

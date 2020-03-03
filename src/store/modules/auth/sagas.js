@@ -23,7 +23,7 @@ export function* signIn({payload}){
     }else{
 
       api.defaults.headers['token'] = data.response.token;
-
+      
       yield put(signInSuccess(data.response))
 
       history.push('/home')
@@ -37,9 +37,10 @@ export function* signIn({payload}){
 
 }
 
-export function setToken({ payload }){
-  if(!payload) return;
-
+export function setToken({payload}){
+  
+  if(!payload || payload.auth.user === null) return false;
+  
   const { token } = payload.auth.user
 
   if(token){

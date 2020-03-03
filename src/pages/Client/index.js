@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Form, Input } from '@rocketseat/unform';
-import InputMask from '../../components/InputMask';
-import DatePicker from '../../components/DatePicker';
 import * as Yup from 'yup';
 import { parseISO, format } from 'date-fns';
+import { toast } from 'react-toastify'
+import api from '../../services/api'
+import { useParams } from 'react-router-dom';
+
+import InputMask from '../../components/InputMask';
+import DatePicker from '../../components/DatePicker';
 
 import { clearMask } from '../../utils';
 
@@ -16,22 +20,62 @@ import { FormContainer, Row, Group } from './styles';
 
 const schema = Yup.object().shape({
   name: Yup.string().required('O Nome é orbigatório'),
-  birth_date: Yup.date().required('A data de nascimento é obrigatória'),
+  birth_date: Yup.date().typeError('Formato inválido').required('A data de nascimento é obrigatória').default(function() {
+    return format(parseISO(new Date().toISOString()), 'dd/MM/yyyy');
+  }).typeError('Formato inválido'),
   cpf: Yup.string().required('O CPF é obrigatório'),
   rg: Yup.string().required('O RG é obrigatório'),
   email: Yup.string().email('Insira um e-mail válido').required('O e-mail é orbigatório'),
-  phone: Yup.string().nullable(true)
-  
+  phone: Yup.string().nullable(true)  
 })
 
 export default function Client() {
 
-  function handleSubmit({name, birth_date, cpf, rg, email, phone}){
+  const [client, setClient] = useState(null);
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function loadClient(){
+      const httpresponse = await api.get('clients/find/'+id);
+
+      const {response} = httpresponse.data
+      console.tron.warn(response)
+      setClient(response)
+    }
+
+    if(id !== null){
+      loadClient()
+    }
+      
+    
+  }, [id])
+
+  async function handleSubmit({name, birth_date, cpf, rg, email, phone}){
     cpf = clearMask(cpf)
     rg = clearMask(rg)
     phone = phone && clearMask(phone)
     birth_date = parseISO(new Date(birth_date).toISOString())
-    console.tron.warn(format(birth_date, 'dd/MM/yyyy'))
+    try {
+      let endpoint = 'clients/insert'
+      if(client.id !== null){
+        endpoint = 'clients/ipdate/'+client.id
+      }
+
+      const httpResponse = await api.post(endpoint,{
+        name, birth_date, cpf, rg, email, phone
+      })
+  
+      const {data} = httpResponse
+  
+      if(data.status !== 200){
+        toast.error(data.response)
+      } else {
+        toast.success('Cliente cadastrado com sucesso')
+      } 
+    } catch (error) {
+      toast.error('Falha de comunicação');
+    }
+
   }
   return (
     <Main>
@@ -39,15 +83,15 @@ export default function Client() {
         <h1> Cadastro de Clientes </h1>
 
         <FormContainer>
-          <Form schema={schema} onSubmit={handleSubmit}>
+          <Form initialData={client} schema={schema} onSubmit={handleSubmit}>
             <Row>
               <Group>
                 <p>Nome*:</p>
-                <Input name="name" placeholder="Nome"/>
+                <Input name="name" placeholder="Nome" />
               </Group>
               <Group>
                 <p>Data de Nascimento*:</p>
-                <DatePicker showPopperArrow={false} name="birth_date" placeholder="__/___/____"/>
+                <DatePicker showPopperArrow={false} name="birth_date"  placeholder="__/___/____"/>
               </Group>
             </Row>
             <Row>

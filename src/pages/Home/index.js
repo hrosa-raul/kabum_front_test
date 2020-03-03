@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+import ClientTile from '../../components/ClientTile';
 
 import {
   Main, 
@@ -9,7 +10,8 @@ import {
 
 import { 
   CenterInfo,
-  ButtonContainer
+  ButtonContainer,
+  WrapperList
 } from './styles';
 
 export default function Home() {
@@ -21,7 +23,7 @@ export default function Home() {
       const httpresponse = await api.get('clients');
 
       const {response} = httpresponse.data
-
+      console.tron.warn(response)
       setClients(response)
     }
 
@@ -32,13 +34,22 @@ export default function Home() {
     <Main>
       <Container>
         <h1>Cadastro de Clientes</h1>
-        {clients.length > 0 ? 
-          <p>Opa</p>
-        : 
-        <CenterInfo>
-          <h2> Você ainda não cadastrou nenhum cliente </h2>
-        </CenterInfo>
-        }
+        <WrapperList>
+          {clients.length > 0 ? 
+            clients.map(client => 
+              <ClientTile
+                id={client.id}  
+                name={client.name}
+                key={client.id}
+              />
+            )
+          : 
+            <CenterInfo>
+              <h2> Você ainda não cadastrou nenhum cliente </h2>
+            </CenterInfo>
+          }  
+        </WrapperList>
+                  
         <ButtonContainer>
           <Link to="/client"> 
             <button>
