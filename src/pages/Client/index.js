@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import { parseISO, format } from 'date-fns';
@@ -8,46 +8,49 @@ import { useParams } from 'react-router-dom';
 
 import InputMask from '../../components/InputMask';
 import DatePicker from '../../components/DatePicker';
+import Addresses from '../../components/Addresses';
+import history from '../../services/history';
 
-import { clearMask } from '../../utils';
+import { clearMask, validarCPF } from '../../utils';
 
 import { 
   Main, 
   Container,
+  FormContainer, Row, Group
 } from '../mainStyles';
-
-import { FormContainer, Row, Group } from './styles';
 
 const schema = Yup.object().shape({
   name: Yup.string().required('O Nome é orbigatório'),
   birth_date: Yup.date().typeError('Formato inválido').required('A data de nascimento é obrigatória').default(function() {
     return format(parseISO(new Date().toISOString()), 'dd/MM/yyyy');
   }).typeError('Formato inválido'),
-  cpf: Yup.string().required('O CPF é obrigatório'),
+  cpf: Yup.string().required('O CPF é obrigatório')
+    .test('cpf_validate', 'CPF inválido', (v) => {
+      return validarCPF(v); 
+    }
+  ),
   rg: Yup.string().required('O RG é obrigatório'),
-  email: Yup.string().email('Insira um e-mail válido').required('O e-mail é orbigatório'),
   phone: Yup.string().nullable(true)  
 })
 
 export default function Client() {
 
-  const [client, setClient] = useState(null);
+  const [client, setClient] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     async function loadClient(){
       const httpresponse = await api.get('clients/find/'+id);
 
-      const {response} = httpresponse.data
-      console.tron.warn(response)
+      let {response} = httpresponse.data
+      
+      response.birth_date = new Date(response.birth_date)
+
       setClient(response)
     }
-
-    if(id !== null){
+    if(id){
       loadClient()
     }
-      
-    
   }, [id])
 
   async function handleSubmit({name, birth_date, cpf, rg, email, phone}){
@@ -57,8 +60,10 @@ export default function Client() {
     birth_date = parseISO(new Date(birth_date).toISOString())
     try {
       let endpoint = 'clients/insert'
-      if(client.id !== null){
-        endpoint = 'clients/ipdate/'+client.id
+      let message = 'Cliente cadastrado com sucesso'
+      if(client.id){
+        endpoint = 'clients/update/'+client.id
+        message = 'Cliente alterado com sucesso'
       }
 
       const httpResponse = await api.post(endpoint,{
@@ -70,9 +75,10 @@ export default function Client() {
       if(data.status !== 200){
         toast.error(data.response)
       } else {
-        toast.success('Cliente cadastrado com sucesso')
+        toast.success(message)
+        history.push('/client/'+data.response.id)
       } 
-    } catch (error) {
+    } catch (er) {
       toast.error('Falha de comunicação');
     }
 
@@ -106,18 +112,24 @@ export default function Client() {
             </Row>
             <Row>
               <Group>
-                <p>E-mail*:</p>
-                <Input name="email" placeholder="Digite seu e-mail"/>
-              </Group>
-              <Group>
                 <p>Telefone:</p>
                 <InputMask name="phone" mask="(99) 99999-9999" placeholder="__ _____-____"/>    
               </Group>
+              <Group>
+                <button type="submit" className="btn-submit">
+                  {client.id ? 'Alterar' : 'Cadastrar'}
+                </button>
+              </Group>
             </Row>
-            <button type="submit" className="btn-submit">Cadastrar</button>
+           
           </Form>
         </FormContainer>
-        
+        <hr />
+        {
+          client.id 
+          ? <Addresses idClient={client.id}/> 
+          : null
+        }
       </Container>
     </Main>
   );

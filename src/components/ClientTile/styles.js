@@ -7,7 +7,8 @@ export const Container = styled.div`
   flex-direction: row;
   margin-top: 20px;
   margin-left: 70px;
-  justify-content:space-around;  
+  align-content:center;
+  justify-content:space-between;  
   p {
     
     font-size:22px;

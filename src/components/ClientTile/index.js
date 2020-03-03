@@ -1,11 +1,30 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { MdModeEdit, MdDeleteForever } from 'react-icons/md'
 import { Container, ButtonContainer } from './styles';
 
-export default function ClientTile({id, name, email}) {
+import api from '../../services/api'
+
+export default function ClientTile({id, name, onDelete}) {
   
-  function deleteClient(){
+  async function deleteClient(){
+    try{
+      const httpResponse = await api.get('clients/delete/'+id)
+      
+      const {data} = httpResponse
+      
+      if(data.status !== 200){
+        toast.error(data.response)
+      }else{
+        toast.success('Cliente excluido!')
+        onDelete()
+      }
+
+    }catch(er){
+      toast.error('Falha de comunicação')
+    }
+    
     console.tron.warn(id)
   }
   

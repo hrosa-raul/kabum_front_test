@@ -9,6 +9,13 @@ const DatePicker = ({ name, ...rest }) => {
   const datepickerRef = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
   const [date, setDate] = useState(defaultValue || null);
+  
+  useEffect(() => {
+    if(defaultValue){
+      setDate(defaultValue)
+    }
+  }, [defaultValue])
+
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -19,7 +26,7 @@ const DatePicker = ({ name, ...rest }) => {
       },
     });
   }, [fieldName, registerField]);
-  return (
+  return ( 
     <>
       <ReactDatePicker
         locale="ptBR"

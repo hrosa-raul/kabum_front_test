@@ -17,16 +17,16 @@ import {
 export default function Home() {
 
   const [clients, setClients] = useState([]);
+  
+  async function loadClients(){
+    const httpresponse = await api.get('clients');
+
+    const {response} = httpresponse.data
+    console.tron.warn(response)
+    setClients(response)
+  }
 
   useEffect(() => {
-    async function loadClients(){
-      const httpresponse = await api.get('clients');
-
-      const {response} = httpresponse.data
-      console.tron.warn(response)
-      setClients(response)
-    }
-
     loadClients()
   }, [])
 
@@ -40,6 +40,7 @@ export default function Home() {
               <ClientTile
                 id={client.id}  
                 name={client.name}
+                onDelete={loadClients}
                 key={client.id}
               />
             )
