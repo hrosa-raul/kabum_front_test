@@ -24,8 +24,6 @@ export default function ClientTile({id, name, onDelete}) {
     }catch(er){
       toast.error('Falha de comunicação')
     }
-    
-    console.tron.warn(id)
   }
   
   return (
@@ -37,8 +35,7 @@ export default function ClientTile({id, name, onDelete}) {
           <button className="edit">
             <MdModeEdit />
           </button>
-        </Link>
-        
+        </Link>     
         <button className="delete" onClick={deleteClient}><MdDeleteForever /> </button>
       </ButtonContainer>
     </Container>

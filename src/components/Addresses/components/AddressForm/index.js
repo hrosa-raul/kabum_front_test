@@ -1,9 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { Form, Input } from '@rocketseat/unform';
+import * as Yup from 'yup';
 import { FormContainer, Row, Group } from '../../../../pages/mainStyles';
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import api from '../../../../services/api'
+
+const schema = Yup.object().shape({
+  cep: Yup.string().required('O CEP é orbigatório'), 
+  street: Yup.string().required('O nome da rua é orbigatório'), 
+  district: Yup.string().required('O Bairro é orbigatório'), 
+  city: Yup.string().required('A Cidade é orbigatória'), 
+  state: Yup.string().required('O Estado é orbigatório'), 
+})
 
 export default function AddressForm({idClient, idAddress ,callback}) {
   const [cep, setCep] = useState({});
@@ -14,8 +23,6 @@ export default function AddressForm({idClient, idAddress ,callback}) {
       const endpoint = 'http://viacep.com.br/ws/'+cep+'/json/'
       const httpResponse = await axios.get(endpoint);
   
-      console.tron.warn(httpResponse)
-
       if(httpResponse.status !== 200){
         toast.error('Erro ao buscar CEP')
       }else{
@@ -58,9 +65,6 @@ export default function AddressForm({idClient, idAddress ,callback}) {
     }else{
       callback()
     }
-
-    console.tron.warn(httpResponse)
-
   }
 
   useEffect(() => {
@@ -74,10 +78,7 @@ export default function AddressForm({idClient, idAddress ,callback}) {
       }else{
         setAddress(data.response)
       }
-
     }
-
-    console.tron.warn(idAddress)
     if(idAddress){
       findAddress()
     }
@@ -85,7 +86,7 @@ export default function AddressForm({idClient, idAddress ,callback}) {
   
   return (
     <FormContainer>
-      <Form initialData={address} onSubmit={handleSubmit}>
+      <Form schema={schema} initialData={address} onSubmit={handleSubmit}>
         <Row>
           <Group>
             <p>CEP*:</p>

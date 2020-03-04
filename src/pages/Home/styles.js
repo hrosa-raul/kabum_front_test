@@ -11,7 +11,6 @@ export const CenterInfo = styled.div`
     color: #2196F3
   }
 `
-
 export const ButtonContainer = styled.div`
   display:flex;
   align-items:flex-end;
@@ -30,7 +29,6 @@ export const ButtonContainer = styled.div`
     color: #fff;
   }
 `
-
 export const WrapperList = styled.div`
  height: 85%;
  overflow: auto;

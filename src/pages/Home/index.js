@@ -17,12 +17,11 @@ import {
 export default function Home() {
 
   const [clients, setClients] = useState([]);
-  
+ 
   async function loadClients(){
     const httpresponse = await api.get('clients');
 
     const {response} = httpresponse.data
-    console.tron.warn(response)
     setClients(response)
   }
 
@@ -49,8 +48,7 @@ export default function Home() {
               <h2> Você ainda não cadastrou nenhum cliente </h2>
             </CenterInfo>
           }  
-        </WrapperList>
-                  
+        </WrapperList>                  
         <ButtonContainer>
           <Link to="/client"> 
             <button>

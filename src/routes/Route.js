@@ -9,12 +9,14 @@ export default function RouteWrapper({
   ...rest
 }){
 
-
   const { user } = store.getState().auth;
   
   if(!user && isPrivate){
-    
     return <Redirect to="/" />
+  }
+
+  if(user && !isPrivate){
+    return <Redirect to="/home" />
   }
 
   return (

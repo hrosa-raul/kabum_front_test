@@ -20,7 +20,6 @@ export default function Addresses({idClient}) {
   const [addresses, setAddresses] = useState([]);
   const [idAddress, setIdAddress] = useState(null);
   
-  
   async function loadAddresses(id){
     const httpResponse = await api.get('addresses/all/'+id);
 
@@ -69,12 +68,9 @@ export default function Addresses({idClient}) {
             > 
               Voltar
             </button>
-        } 
-         
+        }        
       </LineHead>
-     
       <DataContainer>
-        
         {
           formState === formStatus.IDDLE 
           ? 
@@ -98,7 +94,6 @@ export default function Addresses({idClient}) {
               idAddress={idAddress}
               callback={back}
             />
-          
         }
         </DataContainer>
     </Container>

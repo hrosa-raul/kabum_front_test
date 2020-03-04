@@ -31,10 +31,7 @@ export function* signIn({payload}){
     
   }catch(error){
     toast.error('Falha na autenticação.')
-    console.tron.error(error.code);
   }
-
-
 }
 
 export function setToken({payload}){

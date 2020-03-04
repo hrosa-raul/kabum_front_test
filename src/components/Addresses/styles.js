@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   height: 50%;
-  
   width: 100%;
   margin-top: 10px;
   padding-right: 8px;
@@ -17,7 +16,6 @@ export const DataContainer = styled.div`
   overflow: auto;
   height: 100%;
 `
-
 export const InfoWrapper = styled.div`
   display:flex;
   align-items:center;
@@ -31,7 +29,6 @@ export const InfoWrapper = styled.div`
     color: #2196F3
   }
 `
-
 export const LineHead = styled.div`
   display:flex;
   flex-direction: row;
@@ -46,7 +43,6 @@ export const LineHead = styled.div`
     border: 0;
     border-radius: 4px;
     font-size: 16px;
-    color: #fff;
-  
+    color: #fff;  
   } 
 `;

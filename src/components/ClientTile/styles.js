@@ -9,8 +9,8 @@ export const Container = styled.div`
   margin-left: 70px;
   align-content:center;
   justify-content:space-between;  
+  
   p {
-    
     font-size:22px;
     margin-right: 20px; 
   }
@@ -19,7 +19,6 @@ export const Container = styled.div`
 export const ButtonContainer = styled.div`
   display:flex;
   align-items:flex-end;
-
 
   button {
     align-self: right;
@@ -34,6 +33,6 @@ export const ButtonContainer = styled.div`
   }
 
   .delete {
-      background: #f44336;
-    }  
+    background: #f44336;
+  }  
 `

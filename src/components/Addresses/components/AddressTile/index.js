@@ -7,25 +7,22 @@ import api from '../../../../services/api'
 
 export default function AddressTile({ id, cep, city, state, onDelete, onEdit}) {
   
-  
-async function deleteAddress(){
-  try{
-    const httpResponse = await api.get('addresses/delete/'+id)
-    
-    const {data} = httpResponse
-    
-    if(data.status !== 200){
-      toast.error(data.response)
-    }else{
-      toast.success('Endereço excluido!')
-      onDelete()
+  async function deleteAddress(){
+    try{
+      const httpResponse = await api.get('addresses/delete/'+id)
+      
+      const {data} = httpResponse
+      
+      if(data.status !== 200){
+        toast.error(data.response)
+      }else{
+        toast.success('Endereço excluido!')
+        onDelete()
+      }
+    }catch(er){
+      toast.error('Falha de comunicação')
     }
-
-  }catch(er){
-    toast.error('Falha de comunicação')
   }
-
-}
 
   return (
     <Container>

@@ -19,7 +19,6 @@ export const Container = styled.div`
   }
 `;
 
-
 export const FormContainer = styled.div`
   form {
     margin-top: 10px;
@@ -36,11 +35,11 @@ export const FormContainer = styled.div`
       min-width: 300px;
       width: 100%;
       
-
       &.readonly {
         background: rgba(0,0,0,0.1) !important;
       }
     }
+    
     .react-datepicker-wrapper{
       min-width: 300px;
       width: 100%;

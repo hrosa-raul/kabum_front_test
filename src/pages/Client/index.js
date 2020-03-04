@@ -4,7 +4,8 @@ import * as Yup from 'yup';
 import { parseISO, format } from 'date-fns';
 import { toast } from 'react-toastify'
 import api from '../../services/api'
-import { useParams } from 'react-router-dom';
+import { Link,  useParams } from 'react-router-dom';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 import InputMask from '../../components/InputMask';
 import DatePicker from '../../components/DatePicker';
@@ -18,6 +19,8 @@ import {
   Container,
   FormContainer, Row, Group
 } from '../mainStyles';
+
+import { HeaderWrapper } from './styles'
 
 const schema = Yup.object().shape({
   name: Yup.string().required('O Nome é orbigatório'),
@@ -81,13 +84,20 @@ export default function Client() {
     } catch (er) {
       toast.error('Falha de comunicação');
     }
-
   }
+
   return (
     <Main>
       <Container>
-        <h1> Cadastro de Clientes </h1>
-
+        <HeaderWrapper>
+          <Link to="/home"> 
+            <button>
+              <MdKeyboardBackspace /> 
+            </button>
+          </Link>
+          <h1> Cadastro de Clientes </h1>
+          <p></p>
+        </HeaderWrapper>
         <FormContainer>
           <Form initialData={client} schema={schema} onSubmit={handleSubmit}>
             <Row>
@@ -120,8 +130,7 @@ export default function Client() {
                   {client.id ? 'Alterar' : 'Cadastrar'}
                 </button>
               </Group>
-            </Row>
-           
+            </Row>         
           </Form>
         </FormContainer>
         <hr />
